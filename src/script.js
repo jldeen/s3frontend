@@ -23,7 +23,6 @@ button.addEventListener("click", () => {
 
 function uploading() {
     button.style.backgroundColor = "#FFA500";
-
     button.textContent=`Uploading...`
     return 
 }
@@ -40,18 +39,12 @@ async function submitForm(e) {
     await fetch("http://localhost:3000/upload_files", {
         method: 'POST',
         body: formData,
-        // headers: {
-        //   "Content-Type": "multipart/form-data"
-        // }
     })
-        .then(() => {
-            button.style.backgroundColor = "green";
-            button.textContent="Upload Complete!"
-
-        })
-        .then(() => setTimeout(function(){
-            window.location.reload();
-         }, 3000))
         .then((res) => console.log(res))
-        .catch((err) => ("Error occured", err))
+        .then(() => {
+            form.reset();
+            button.style.backgroundColor = "rgb(78, 98, 168)";
+            button.textContent = "Upload";
+        })
+        .catch((err) => console.log("Error occurred", err))
 }

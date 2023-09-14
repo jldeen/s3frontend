@@ -29,7 +29,7 @@ async function uploadFiles(req, res) {
     const file = req.files[0];
     const key = Date.now().toString() + '-' + file.originalname;
 
-    const uploadVideo = new S3.PutObjectCommand({
+    const uploadFile = new S3.PutObjectCommand({
         Bucket: process.env.S3_BUCKET_NAME,
         Key: key,
         Body: file.buffer,
@@ -37,10 +37,14 @@ async function uploadFiles(req, res) {
     })
 
     try {        
-        const response = await client.send(uploadVideo);
+        const response = await client.send(uploadFile);
         console.log(response)
-        res.json({ message: "Successfully uploaded files" });
+        res.statusMessage = `Successfuly uploaded files`
+        res.status(200).end();
     } catch (error) {
+        res.statusMessage =`${error}`;
+        res.status(500).end();
+        console.log('Error', error)
         console.error(error);
     }
 }
